@@ -156,9 +156,16 @@ plot_smith(stub_match_trace(*_short1, zL), line=dict(width=2, color="purple"), n
 plot_smith(stub_match_trace(*_short2, zL), line=dict(width=2, color="green"), name=f"Stub match at {_short2[1]:.3f} wl")
 
 z_75, match_75, match_75_length, z_75_in, swr_75_in = series_match(ZL, 75)
-plot_smith(z_75[:match_75+1], line=dict(width=2, color="orange"), mode="lines", name=f"75 ohm matching section ({match_75_length:.3f} wl)", legendgroup='75')
-plot_smith(z_75[match_75+1:], line=dict(width=2, color="orange", dash="dash"), showlegend=False, mode="lines", legendgroup='75')
-plot_smith(z_75_in, line=dict(width=1, color="orange", dash="dot"), name=f"SWR {swr_75_in:.1f}:1", legendgroup='75')
+if swr_75_in < SWR:
+    plot_smith(z_75[:match_75+1], line=dict(width=2, color="orange"), mode="lines", name=f"75 ohm matching section ({match_75_length:.3f} wl)", legendgroup='75')
+    plot_smith(z_75[match_75+1:], line=dict(width=2, color="orange", dash="dash"), showlegend=False, mode="lines", legendgroup='75')
+    plot_smith(z_75_in, line=dict(width=1, color="orange", dash="dot"), name=f"SWR {swr_75_in:.1f}:1", legendgroup='75')
+
+z_300, match_300, match_300_length, z_300_in, swr_300_in = series_match(ZL, 300)
+if swr_300_in < SWR:
+    plot_smith(z_300[:match_300+1], line=dict(width=2, color="orange"), mode="lines", name=f"300 ohm matching section ({match_300_length:.3f} wl)", legendgroup='300')
+    plot_smith(z_300[match_300+1:], line=dict(width=2, color="orange", dash="dash"), showlegend=False, mode="lines", legendgroup='300')
+    plot_smith(z_300_in, line=dict(width=1, color="orange", dash="dot"), name=f"SWR {swr_300_in:.1f}:1", legendgroup='300')
 
 transformer_ratios = np.arange(2, 9)**2
 z_transformed = (zL / transformer_ratios)

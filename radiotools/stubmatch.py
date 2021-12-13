@@ -156,9 +156,9 @@ plot_smith(stub_match_trace(*_short1, zL), line=dict(width=2, color="purple"), n
 plot_smith(stub_match_trace(*_short2, zL), line=dict(width=2, color="green"), name=f"Stub match at {_short2[1]:.3f} wl")
 
 z_75, match_75, match_75_length, z_75_in, swr_75_in = series_match(ZL, 75)
-plot_smith(z_75[:match_75+1], line=dict(width=2, color="orange"), mode="lines", name=f"75 ohm matching section ({match_75_length:.3f} wl)")
-plot_smith(z_75[match_75+1:], line=dict(width=2, color="orange", dash="dash"), showlegend=False, mode="lines")
-plot_smith(z_75_in, line=dict(width=1, color="orange", dash="dot"), name=f"SWR {swr_75_in:.1f}:1")
+plot_smith(z_75[:match_75+1], line=dict(width=2, color="orange"), mode="lines", name=f"75 ohm matching section ({match_75_length:.3f} wl)", legendgroup='75')
+plot_smith(z_75[match_75+1:], line=dict(width=2, color="orange", dash="dash"), showlegend=False, mode="lines", legendgroup='75')
+plot_smith(z_75_in, line=dict(width=1, color="orange", dash="dot"), name=f"SWR {swr_75_in:.1f}:1", legendgroup='75')
 
 transformer_ratios = np.arange(2, 9)**2
 z_transformed = (zL / transformer_ratios)
@@ -168,7 +168,7 @@ for swr, r, n in sorted(zip(swr_transformed, refl_line_transformed.T, transforme
     if swr < SWR:
         print(f"{n:d}:1 transformer gives SWR {swr:.1f}:1")
         z_line_transformed = r2z(r)
-        plot_smith(z_line_transformed, line=dict(width=1, color="red"), name=f"{n:d}:1 => SWR {swr:.1f}:1")
+        plot_smith(z_line_transformed, line=dict(width=1, color="red"), name=f"{n:d}:1 => SWR {swr:.1f}:1", legendgroup='xfrmr')
         break
 
 if XL < -1:
@@ -176,7 +176,7 @@ if XL < -1:
     if X_coil > 0 and swr_coil < 3 and swr_coil < SWR-0.1:
         # Shunt inductance can possibly match this
         L_shunt = X_coil / (two_pi * f) * 1e6
-        plot_smith(z_shunt_coil, line=dict(width=2, color="blue"), name=f"Shunt inductance ({L_shunt:2.2g} mH)")
-        plot_smith(z_in_coil, line=dict(width=1, color="blue", dash="dot"), name=f"SWR {swr_coil:.1f}:1")
+        plot_smith(z_shunt_coil, line=dict(width=2, color="blue"), name=f"Shunt inductance ({L_shunt:2.2g} mH)", legendgroup='shuntcoil')
+        plot_smith(z_in_coil, line=dict(width=1, color="blue", dash="dot"), name=f"SWR {swr_coil:.1f}:1", legendgroup='shuntcoil')
 
 fig.show()
